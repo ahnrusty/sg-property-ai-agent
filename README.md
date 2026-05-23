@@ -13,25 +13,32 @@ Unofficial personal tool. Not affiliated with any agency, developer, bank, or go
 ```
 sg-property-ai-agent/
 ├── prompts/                Master system prompt + reusable templates
-├── skills/                 Modular knowledge files the agent can load on demand
-├── mcp_server/             FastMCP server with calculators (ABSD, BSD, SSD, TDSR/MSR, mortgage, lease decay, scorecard)
-├── examples/               Worked end-to-end conversations
+│   └── minimal/            Token-budget-aware variants (tiny, compact, quick-ref, decision trees, few-shot)
+├── skills/                 18 modular knowledge files the agent can load on demand
+├── mcp_server/             FastMCP server with 17 calculators (BSD, ABSD, SSD, TDSR/MSR, mortgage, lease decay, upgrade paths, decoupling, scorecard)
+├── ollama/                 Modelfiles for running fully offline on Ollama (Gemma 3, Qwen 3, Llama 3.3)
+├── cli/                    Local CLI that pairs Ollama with Python calculators
+├── examples/               9 worked end-to-end conversations
 └── docs/                   Installation and integration guides
 ```
 
-## Quick start
+## Quick start — pick the option that fits your context
 
-### Option 1: Plain prompt (any chat tool)
+### Option 1: Full prompt + frontier model (best quality)
 
-Copy `prompts/system-prompt.md` into the first message of a fresh chat. Paste listings, ask away.
+Copy `prompts/system-prompt.md` into a Claude / GPT / Gemini chat. Paste listings, ask away. Best when you have a large context window and want maximum accuracy.
 
-### Option 2: Skills as context
+### Option 2: Tiny / compact prompt (token-constrained)
 
-When discussing a specific situation (e.g. HDB resale eligibility, ABSD on second property), additionally paste the matching file from `skills/` so the assistant has full reference text without guessing.
+Use `prompts/minimal/system-prompt-tiny.md` (~800 tokens) or `prompts/minimal/system-prompt-compact.md` (~2,000 tokens) when context is limited. Add `prompts/minimal/quick-reference-card.md` for the lookup tables and `prompts/minimal/few-shot-examples.md` to show the model the exact output format.
 
-### Option 3: MCP server (calculators)
+### Option 3: Skills as context
 
-Run the MCP server locally and connect it to Claude Desktop, Cursor, or any MCP-compatible client. The assistant can then invoke deterministic calculators for stamp duty, affordability, mortgage payment, lease decay, and listing scorecards instead of doing the maths in its head.
+When discussing a specific situation (HDB eligibility, ABSD on second property, decoupling), paste the matching file from `skills/` so the assistant has full reference text without guessing.
+
+### Option 4: MCP server (deterministic calculators)
+
+Run the MCP server locally and connect it to Claude Desktop, Cursor, or any MCP-compatible client. The assistant invokes 17 deterministic calculators for stamp duty, affordability, mortgage, lease decay, upgrade-path analysis, decoupling math, and listing scorecards instead of doing the maths in its head.
 
 ```bash
 cd mcp_server
@@ -39,7 +46,36 @@ uv pip install -e .
 python -m sg_property_mcp
 ```
 
-See `docs/installation.md` and `docs/using-with-claude-desktop.md`.
+See `docs/installation.md`, `docs/using-with-claude-desktop.md`, `docs/using-with-cursor.md`.
+
+### Option 5: Fully offline with Ollama
+
+Run the agent on a local model (Gemma 3 4B / 27B, Qwen 3 8B, Llama 3.3 70B). Zero per-query cost, full privacy, works offline.
+
+```bash
+ollama pull gemma3:27b
+cd ollama
+ollama create sg-property -f Modelfile.gemma3-26b
+ollama run sg-property
+```
+
+See `ollama/README.md`. Pair with the CLI for Ollama + Python calculator hybrid:
+
+```bash
+cli/sg_property_cli.py "SC first home $1.8M, compute stamp duty"
+cli/sg_property_cli.py --interactive
+```
+
+See `cli/README.md`.
+
+## Loading strategy by context budget
+
+| Context budget | Recommended setup |
+|----------------|-------------------|
+| ≥ 100k tokens (Claude Sonnet, Opus, GPT-5) | Full system prompt + all relevant skills + MCP server |
+| 8-32k tokens (Gemma 3 27B, Qwen 3 8B, GPT-4-class) | Compact prompt + quick reference + few-shot examples + targeted skills |
+| 4-8k tokens (Gemma 3 4B, Llama 3.2 3B) | Tiny prompt + 1-2 most relevant few-shot examples |
+| Offline / cost-sensitive | CLI with Ollama backend + Python calculators |
 
 ## Tools provided by the MCP server
 
