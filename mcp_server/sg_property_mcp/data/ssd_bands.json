@@ -1,0 +1,10 @@
+{
+  "effective_from": "2017-03-11",
+  "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/selling-or-disposing-property/seller's-stamp-duty-(ssd)",
+  "residential": [
+    { "holding_months_max": 12, "rate": 0.12, "description": "Sold within 1 year" },
+    { "holding_months_max": 24, "rate": 0.08, "description": "Sold within 1-2 years" },
+    { "holding_months_max": 36, "rate": 0.04, "description": "Sold within 2-3 years" },
+    { "holding_months_max": null, "rate": 0.00, "description": "Held > 3 years" }
+  ]
+}

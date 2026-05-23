@@ -1,0 +1,17 @@
+{
+  "effective_from": "2023-04-27",
+  "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/buying-or-acquiring-property/additional-buyer's-stamp-duty-(absd)",
+  "notes": "ABSD computed on the higher of purchase price or market value. Profile fixed at OTP date. Joint purchase uses the highest applicable rate among buyers.",
+  "rates": {
+    "SC": { "first": 0.00, "second": 0.20, "third_plus": 0.30 },
+    "SPR": { "first": 0.05, "second": 0.30, "third_plus": 0.35 },
+    "FOREIGNER": { "any": 0.60 },
+    "ENTITY": { "any": 0.65 },
+    "TRUSTEE": { "any": 0.65 },
+    "HOUSING_DEVELOPER": {
+      "non_remittable": 0.05,
+      "remittable": 0.35,
+      "aggregate": 0.40
+    }
+  }
+}

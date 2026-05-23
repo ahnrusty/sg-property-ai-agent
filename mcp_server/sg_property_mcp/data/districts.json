@@ -1,0 +1,33 @@
+{
+  "source": "Singapore Postal District guide",
+  "districts": {
+    "D01": { "name": "Raffles Place, Cecil, Marina, People's Park", "region": "CCR" },
+    "D02": { "name": "Anson, Tanjong Pagar", "region": "CCR" },
+    "D03": { "name": "Queenstown, Tiong Bahru", "region": "RCR" },
+    "D04": { "name": "Telok Blangah, Harbourfront", "region": "RCR" },
+    "D05": { "name": "Pasir Panjang, Hong Leong Garden, Clementi New Town", "region": "RCR" },
+    "D06": { "name": "High Street, Beach Road (part)", "region": "CCR" },
+    "D07": { "name": "Middle Road, Golden Mile", "region": "RCR" },
+    "D08": { "name": "Little India", "region": "RCR" },
+    "D09": { "name": "Orchard, Cairnhill, River Valley", "region": "CCR" },
+    "D10": { "name": "Ardmore, Bukit Timah, Holland Road, Tanglin", "region": "CCR" },
+    "D11": { "name": "Watten Estate, Novena, Thomson", "region": "CCR" },
+    "D12": { "name": "Balestier, Toa Payoh, Serangoon", "region": "RCR" },
+    "D13": { "name": "Macpherson, Braddell", "region": "RCR" },
+    "D14": { "name": "Geylang, Eunos", "region": "RCR" },
+    "D15": { "name": "Katong, Joo Chiat, Amber Road", "region": "RCR" },
+    "D16": { "name": "Bedok, Upper East Coast, Eastwood, Kew Drive", "region": "OCR" },
+    "D17": { "name": "Loyang, Changi", "region": "OCR" },
+    "D18": { "name": "Tampines, Pasir Ris", "region": "OCR" },
+    "D19": { "name": "Serangoon Garden, Hougang, Punggol", "region": "OCR" },
+    "D20": { "name": "Bishan, Ang Mo Kio", "region": "OCR" },
+    "D21": { "name": "Upper Bukit Timah, Clementi Park, Ulu Pandan", "region": "OCR" },
+    "D22": { "name": "Jurong", "region": "OCR" },
+    "D23": { "name": "Hillview, Dairy Farm, Bukit Panjang, Choa Chu Kang", "region": "OCR" },
+    "D24": { "name": "Lim Chu Kang, Tengah", "region": "OCR" },
+    "D25": { "name": "Kranji, Woodgrove", "region": "OCR" },
+    "D26": { "name": "Upper Thomson, Springleaf", "region": "OCR" },
+    "D27": { "name": "Yishun, Sembawang", "region": "OCR" },
+    "D28": { "name": "Seletar", "region": "OCR" }
+  }
+}

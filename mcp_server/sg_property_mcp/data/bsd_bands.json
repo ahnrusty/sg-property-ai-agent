@@ -1,0 +1,19 @@
+{
+  "effective_from": "2023-02-14",
+  "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/buying-or-acquiring-property/buyer's-stamp-duty-(bsd)",
+  "residential": [
+    { "up_to": 180000, "rate": 0.01 },
+    { "up_to": 360000, "rate": 0.02 },
+    { "up_to": 1000000, "rate": 0.03 },
+    { "up_to": 1500000, "rate": 0.04 },
+    { "up_to": 3000000, "rate": 0.05 },
+    { "up_to": null, "rate": 0.06 }
+  ],
+  "non_residential": [
+    { "up_to": 180000, "rate": 0.01 },
+    { "up_to": 360000, "rate": 0.02 },
+    { "up_to": 1000000, "rate": 0.03 },
+    { "up_to": 1500000, "rate": 0.04 },
+    { "up_to": null, "rate": 0.05 }
+  ]
+}
