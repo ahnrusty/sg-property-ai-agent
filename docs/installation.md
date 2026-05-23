@@ -44,7 +44,7 @@ The server logs to stderr and accepts MCP protocol over stdin/stdout. It is mean
 
 ## Tools provided
 
-11 tools across 4 categories:
+17 tools across 5 categories:
 
 **Stamp duty**
 - `calculate_bsd(consideration, property_type)`
@@ -59,6 +59,14 @@ The server logs to stderr and accepts MCP protocol over stdin/stdout. It is mean
 **Lease and CPF**
 - `lease_decay_value(freehold_equivalent_value, years_remaining)`
 - `cpf_usage_limit(valuation_limit, years_remaining, youngest_buyer_age)`
+- `estimate_cpf_refund_at_sale(cpf_principal_used, years_held, accrued_rate)`
+
+**Upgrade and downgrade paths**
+- `analyze_upgrade_path(current_property, target_property, new_price, profile, marital_status, properties_after_new_buy, keep_existing, youngest_buyer_age, spouse_ages, hdb_flat_type_rooms)`
+- `check_15_month_wait_out(target_hdb_rooms, youngest_buyer_age, spouse_ages, target_is_new_bto, has_otp_before_sep_2022)`
+- `estimate_decoupling_cost(current_property_value, share_being_transferred)`
+- `compare_decoupling_vs_absd(current_joint_property_value, new_property_price, profile, properties_after_new_buy)`
+- `estimate_transition_cash_flow(sell_price, sell_outstanding_loan, sell_cpf_refund_estimate, sell_agent_commission_rate, new_price, new_ltv_cap, new_min_cash_pct, new_bsd, new_absd_upfront, interim_months, interim_rental_monthly)`
 
 **Listings**
 - `score_listing(listing, criteria)`

@@ -185,6 +185,27 @@ class TestCheck15MonthWaitOut:
         )
         assert r["wait_months"] == 30
 
+    def test_infers_youngest_from_spouse_ages(self) -> None:
+        # Don't pass youngest_buyer_age explicitly; should infer min(58, 56) = 56
+        r = check_15_month_wait_out(
+            target_hdb_rooms=4,
+            spouse_ages=(58, 56),
+        )
+        assert r["applies"] is False
+        assert "Senior" in r["exemption_reason"]
+
+    def test_single_buyer_no_spouse(self) -> None:
+        # Single 60yo buying 3-room: senior exempt
+        r = check_15_month_wait_out(
+            target_hdb_rooms=3,
+            youngest_buyer_age=60,
+        )
+        assert r["applies"] is False
+
+    def test_raises_when_no_age_info(self) -> None:
+        with pytest.raises(ValueError):
+            check_15_month_wait_out(target_hdb_rooms=4)
+
 
 class TestEstimateDecouplingCost:
     def test_basic_calculation(self) -> None:

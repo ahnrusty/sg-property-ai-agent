@@ -46,15 +46,28 @@ No em dashes in user-facing drafts.
 
 Activate the rule with `@sg-property-agent` in chat.
 
-## Worked example
+## Worked examples
+
+### Stamp duty quick check
 
 > @sg-property-agent compute BSD on $1.2M and ABSD if it's the 2nd property for an SPR.
 
 Cursor will:
 1. Activate the rule
-2. Call the MCP `calculate_bsd(1_200_000)` tool
-3. Call the MCP `calculate_absd(1_200_000, "SPR", 2)` tool
-4. Format the response with breakdowns and IRAS verification reminder
+2. Call `calculate_bsd(1_200_000)` and `calculate_absd(1_200_000, "SPR", 2)`
+3. Return formatted breakdown with IRAS verification reminder
+
+### Upgrade path
+
+> @sg-property-agent I'm SC, married, own $1.8M condo, want to buy $4M landed and keep the condo for rental. What's my best play?
+
+Cursor will call `analyze_upgrade_path("CONDO", "LANDED", 4_000_000, "SC", "MARRIED_SC_SC", 2, keep_existing=True)` and surface the decoupling strategy as the high-leverage option, with cost-vs-savings math.
+
+### Downgrade to HDB
+
+> @sg-property-agent I'm 48, spouse 46, selling our $1.6M condo to buy a 5-room HDB. What's the timeline?
+
+Cursor will call `check_15_month_wait_out(target_hdb_rooms=5, spouse_ages=[48, 46])` and flag the 15-month wait-out, recommend interim housing, and walk through the standard path from `skills/upgrade-downgrade-paths.md`.
 
 ## Skills as @-mentions
 

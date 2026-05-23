@@ -575,24 +575,30 @@ def analyze_upgrade_path(
 
 
 def check_15_month_wait_out(
-    spouse_ages: tuple[int, int] | None,
-    youngest_buyer_age: int,
     target_hdb_rooms: int,
+    spouse_ages: tuple[int, int] | None = None,
+    youngest_buyer_age: int | None = None,
     target_is_new_bto: bool = False,
     has_otp_before_sep_2022: bool = False,
 ) -> dict:
     """Check whether the 15-month wait-out applies for private-to-HDB downgrade.
 
     Args:
+        target_hdb_rooms: Number of rooms in target HDB (2, 3, 4, 5).
         spouse_ages: (age_a, age_b) for couples; None for single buyer.
         youngest_buyer_age: Single buyer's age, or youngest in joint application.
-        target_hdb_rooms: Number of rooms in target HDB (2, 3, 4, 5).
+            If None, inferred from spouse_ages (min of the two); else required.
         target_is_new_bto: If True, target is BTO (30-month wait); else resale (15-month).
         has_otp_before_sep_2022: If True, has documentary OTP/sale proof before Sep 30, 2022.
 
     Returns:
         dict with applies, wait_months, exemption_reason, appeal_advice.
     """
+    if youngest_buyer_age is None:
+        if spouse_ages is not None:
+            youngest_buyer_age = min(spouse_ages)
+        else:
+            raise ValueError("Provide either youngest_buyer_age or spouse_ages.")
     if has_otp_before_sep_2022:
         return {
             "applies": False,

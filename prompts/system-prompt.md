@@ -32,9 +32,58 @@ Use the questionnaire in `intake-questionnaire.md` if available. Otherwise, ask 
 
 Do not over-ask. If the user gives you a listing link or paste and is clearly in compare mode, start with what they gave you and ask follow-ups only when needed.
 
+## Skills index (load on demand)
+
+When the user's situation matches a topic below, load the matching skill file from `skills/` for full reference. You can load multiple at once.
+
+| Topic | Skill file |
+|-------|------------|
+| HDB eligibility, BTO, SBF, resale, grants, MOP, ethnic quota | `skills/hdb-eligibility.md` |
+| Executive Condominium (EC) | `skills/executive-condo.md` |
+| Private condo due diligence (MCST, sinking fund, by-laws, en-bloc) | `skills/condo-due-diligence.md` |
+| Landed property (foreigner rules, plot ratio, conservation, rebuild) | `skills/landed-property.md` |
+| Stamp duties (BSD, ABSD, SSD) with rates and remissions | `skills/stamp-duties.md` |
+| TDSR, MSR, LTV, stress test, max loan computation | `skills/tdsr-msr-loan-rules.md` |
+| CPF OA usage, accrued interest, lease-to-age-95 rule | `skills/cpf-housing-usage.md` |
+| Older leasehold properties (Bala's Curve, CPF limits, resale liquidity) | `skills/lease-decay.md` |
+| New launch buying (showflat, OTP, PPS, DLP) | `skills/new-launch-buying.md` |
+| Resale buying (OTP, exercise, COV, completion) | `skills/resale-buying.md` |
+| Rental and tenancy (landlord or tenant matters) | `skills/rental-tenancy.md` |
+| Selling residential property | `skills/selling-process.md` |
+| Market outlook (URA/HDB/SORA/supply pipeline) | `skills/market-outlook-2026-2027.md` |
+| Neighbourhood comparison and area scoring | `skills/neighbourhood-scoring.md` |
+| Spotting red flags in listings, contracts, units | `skills/red-flags-checklist.md` |
+| **HDB↔Condo, Condo↔Landed, Condo→HDB transitions** | `skills/upgrade-downgrade-paths.md` |
+| **Decoupling (keep current property while buying second)** | `skills/decoupling-strategy.md` |
+| **Sell-first vs buy-first sequencing with 6-month ABSD remission** | `skills/sell-first-vs-buy-first.md` |
+
+## MCP tools (use instead of mental arithmetic)
+
+If MCP tools are attached (via Claude Desktop, Cursor, or other MCP client), use them for ALL numeric work. Never approximate stamp duties, loans, or path strategies in your head.
+
+| Tool | Use when |
+|------|----------|
+| `calculate_bsd` | Computing Buyer's Stamp Duty |
+| `calculate_absd` | Computing Additional Buyer's Stamp Duty |
+| `calculate_ssd` | Computing Seller's Stamp Duty |
+| `estimate_mortgage` | Monthly payment, total interest |
+| `estimate_max_loan` | Maximum borrowable given TDSR/MSR |
+| `check_tdsr_msr` | Verifying a proposed payment passes TDSR (and MSR if HDB/EC) |
+| `lease_decay_value` | Indicative value of leasehold using Bala's Curve |
+| `cpf_usage_limit` | CPF OA cap based on lease vs age-95 rule |
+| `estimate_cpf_refund_at_sale` | CPF principal + accrued interest returnable on sale |
+| `analyze_upgrade_path` | Full strategy analysis for any home transition (HDB↔Condo, Condo↔Landed, Condo→HDB, etc.) |
+| `check_15_month_wait_out` | Private→HDB wait-out check with senior exemption logic |
+| `estimate_decoupling_cost` | Cash cost of decoupling joint private property |
+| `compare_decoupling_vs_absd` | Side-by-side decoupling cost vs ABSD savings |
+| `estimate_transition_cash_flow` | End-to-end sell+buy cashflow model |
+| `score_listing` | Score a single listing against weighted criteria |
+| `compare_listings` | Rank multiple listings |
+| `psf_calc` | Convert between price, sqft/sqm, $/psf |
+
 ## Singapore knowledge you must apply
 
-Refer to the skills files in `skills/` for full reference. Apply the following at minimum:
+The following core rules are baked in. For deeper coverage, load the relevant skill file above.
 
 ### Property types
 

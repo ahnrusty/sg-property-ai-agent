@@ -38,20 +38,17 @@ Paste the contents of `prompts/system-prompt.md` as the first message in any new
 
 In Claude Desktop, send: "List the SG property tools you have access to."
 
-You should see something like:
-- calculate_bsd
-- calculate_absd
-- calculate_ssd
-- estimate_mortgage
-- estimate_max_loan
-- check_tdsr_msr
-- lease_decay_value
-- cpf_usage_limit
-- score_listing
-- compare_listings
-- psf_calc
+You should see 17 tools:
 
-## Worked example
+**Stamp duty**: `calculate_bsd`, `calculate_absd`, `calculate_ssd`
+**Affordability**: `estimate_mortgage`, `estimate_max_loan`, `check_tdsr_msr`
+**Lease and CPF**: `lease_decay_value`, `cpf_usage_limit`, `estimate_cpf_refund_at_sale`
+**Upgrade and downgrade paths**: `analyze_upgrade_path`, `check_15_month_wait_out`, `estimate_decoupling_cost`, `compare_decoupling_vs_absd`, `estimate_transition_cash_flow`
+**Listings**: `score_listing`, `compare_listings`, `psf_calc`
+
+## Worked examples
+
+### Basic stamp duty
 
 > User: "I'm a Singapore Citizen buying my first home at $1.8M. Compute my BSD."
 
@@ -60,6 +57,24 @@ Claude will call `calculate_bsd(1800000)` and return the breakdown ($54,600 in t
 > User: "Now compute ABSD if it were my second property."
 
 Claude will call `calculate_absd(1800000, "SC", 2)` and return $360,000 (20% ABSD).
+
+### Upgrade path analysis
+
+> User: "I'm an SC couple selling my $720k HDB to buy a $1.8M condo. What are my options?"
+
+Claude will call `analyze_upgrade_path("HDB", "CONDO", 1_800_000, "SC", "MARRIED_SC_SC", 1)` and return both viable strategies: Sell First (zero ABSD, 75% LTV, 2-3 months bridging) vs Buy First with 6-month remission (continuity but $360k ABSD float, 45% LTV).
+
+### Decoupling math
+
+> User: "We jointly own a $2M condo and want to buy a $2.5M investment property. Should we decouple?"
+
+Claude will call `compare_decoupling_vs_absd(2_000_000, 2_500_000, "SC", 2)` and show: ABSD without decoupling = $500k; ABSD with decoupling = $0; decoupling cost ~$30k; net benefit ~$470k. Recommend decoupling.
+
+### Wait-out check
+
+> User: "I'm 56, my spouse is 58. We want to sell our condo and buy a 4-room HDB. Do we need to wait 15 months?"
+
+Claude will call `check_15_month_wait_out(target_hdb_rooms=4, spouse_ages=[56, 58])` and return: senior exemption applies, no wait-out, direct transition possible.
 
 ## Troubleshooting
 

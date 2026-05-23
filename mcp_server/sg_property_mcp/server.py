@@ -279,7 +279,7 @@ def analyze_upgrade_path(
 @mcp.tool()
 def check_15_month_wait_out(
     target_hdb_rooms: int,
-    youngest_buyer_age: int = 40,
+    youngest_buyer_age: int | None = None,
     spouse_ages: list[int] | None = None,
     target_is_new_bto: bool = False,
     has_otp_before_sep_2022: bool = False,
@@ -289,15 +289,16 @@ def check_15_month_wait_out(
     Args:
         target_hdb_rooms: Number of rooms in target HDB (2-5).
         youngest_buyer_age: Single buyer's age or youngest co-buyer's age.
+            If omitted, inferred from spouse_ages (min of the two).
         spouse_ages: [age_a, age_b] for couples; needed for senior exemption.
         target_is_new_bto: True for BTO (30-month wait), False for resale (15-month).
         has_otp_before_sep_2022: Documentary proof of OTP/sale before policy date.
     """
     spouse_tuple = tuple(spouse_ages) if spouse_ages else None
     return upgrade_paths.check_15_month_wait_out(
+        target_hdb_rooms=target_hdb_rooms,
         spouse_ages=spouse_tuple,
         youngest_buyer_age=youngest_buyer_age,
-        target_hdb_rooms=target_hdb_rooms,
         target_is_new_bto=target_is_new_bto,
         has_otp_before_sep_2022=has_otp_before_sep_2022,
     )

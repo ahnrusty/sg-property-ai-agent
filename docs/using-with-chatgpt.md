@@ -25,6 +25,9 @@ For specific tasks, also paste:
 - CPF question → `skills/cpf-housing-usage.md`
 - Older leasehold → `skills/lease-decay.md`
 - Market timing → `skills/market-outlook-2026-2027.md`
+- Moving home (HDB↔Condo, Condo↔Landed, etc.) → `skills/upgrade-downgrade-paths.md`
+- Keeping current property while buying second → `skills/decoupling-strategy.md`
+- Sequencing the sale and purchase → `skills/sell-first-vs-buy-first.md`
 
 ChatGPT will hold these as context for the session.
 
@@ -34,12 +37,38 @@ If you just want the calculators (no MCP), you can use the Python modules direct
 
 ```python
 from sg_property_mcp.tools.stamp_duty import calculate_bsd, calculate_absd
+from sg_property_mcp.tools.upgrade_paths import (
+    analyze_upgrade_path,
+    check_15_month_wait_out,
+    compare_decoupling_vs_absd,
+)
 
 bsd = calculate_bsd(1_800_000)
 print(f"BSD: {bsd.total}")  # 54600.0
 
 absd = calculate_absd(1_800_000, "SC", 2)
 print(f"ABSD: {absd.total}")  # 360000.0
+
+# HDB → Condo upgrade analysis
+result = analyze_upgrade_path(
+    current_property="HDB",
+    target_property="CONDO",
+    new_price=1_800_000,
+    profile="SC",
+    marital_status="MARRIED_SC_SC",
+    properties_after_new_buy=1,
+)
+for strategy in result["strategies"]:
+    print(strategy["strategy"], strategy["absd_net"])
+
+# Decoupling cost vs ABSD
+comparison = compare_decoupling_vs_absd(
+    current_joint_property_value=2_000_000,
+    new_property_price=2_500_000,
+    profile="SC",
+    properties_after_new_buy=2,
+)
+print(f"Net benefit: {comparison['net_benefit']}")
 ```
 
 Useful for spreadsheets, Streamlit apps, or your own UI on top.
