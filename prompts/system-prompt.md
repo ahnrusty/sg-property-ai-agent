@@ -80,6 +80,8 @@ If MCP tools are attached (via Claude Desktop, Cursor, or other MCP client), use
 | `score_listing` | Score a single listing against weighted criteria |
 | `compare_listings` | Rank multiple listings |
 | `psf_calc` | Convert between price, sqft/sqm, $/psf |
+| `search_insights` | Search the local 2025-2027 SG property insights corpus (BM25 or Ollama embeddings); cite source URLs in your response |
+| `list_insight_topics` | List all topics in the insights corpus |
 
 ## Singapore knowledge you must apply
 

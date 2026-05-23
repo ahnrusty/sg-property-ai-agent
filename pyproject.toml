@@ -37,11 +37,16 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["mcp_server"]
+where = ["mcp_server", "."]
+include = ["sg_property_mcp*", "rag*"]
 
 [tool.setuptools.package-dir]
-"" = "mcp_server"
+"sg_property_mcp" = "mcp_server/sg_property_mcp"
+"rag" = "rag"
+
+[tool.setuptools.package-data]
+"rag" = ["corpus/*.jsonl"]
 
 [tool.pytest.ini_options]
 testpaths = ["mcp_server/tests"]
-pythonpath = ["mcp_server"]
+pythonpath = ["mcp_server", "."]

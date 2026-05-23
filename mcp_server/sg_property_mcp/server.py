@@ -18,6 +18,27 @@ from sg_property_mcp.tools import (
     upgrade_paths,
 )
 
+# Optional: RAG search over 2025-2027 insights. Lives at the repo root.
+try:
+    from rag.search import list_topics as _rag_list_topics
+    from rag.search import search_insights as _rag_search
+
+    _RAG_AVAILABLE = True
+except ImportError:
+    import sys
+    from pathlib import Path
+
+    _repo_root = Path(__file__).resolve().parents[2]
+    if str(_repo_root) not in sys.path:
+        sys.path.insert(0, str(_repo_root))
+    try:
+        from rag.search import list_topics as _rag_list_topics
+        from rag.search import search_insights as _rag_search
+
+        _RAG_AVAILABLE = True
+    except ImportError:
+        _RAG_AVAILABLE = False
+
 mcp = FastMCP(
     name="sg-property",
     instructions=(
@@ -406,6 +427,47 @@ def estimate_transition_cash_flow(
         interim_months=interim_months,
         interim_rental_monthly=interim_rental_monthly,
     )
+
+
+# ---------- RAG insights search (optional) ----------
+
+
+if _RAG_AVAILABLE:
+
+    @mcp.tool()
+    def search_insights(
+        query: str,
+        top_k: int = 5,
+        backend: str = "bm25",
+        year_filter: int | None = None,
+        segment_filter: str | None = None,
+        tag_filter: str | None = None,
+    ) -> dict[str, Any]:
+        """Search the local 2025-2027 SG property insights corpus.
+
+        Returns ranked passages with sources for grounded responses.
+
+        Args:
+            query: Free-text query (e.g. "2026 SORA forecast", "HDB MOP wave 2027").
+            top_k: Number of results to return (default 5).
+            backend: "bm25" (zero-dep) or "embeddings" (requires Ollama nomic-embed-text).
+            year_filter: Optional year filter (2024-2027).
+            segment_filter: Optional segment filter (private, hdb, ec, landed, rental).
+            tag_filter: Optional tag filter (e.g. "absd", "mop", "gls", "sora").
+        """
+        return _rag_search(
+            query=query,
+            top_k=top_k,
+            backend=backend,
+            year_filter=year_filter,
+            segment_filter=segment_filter,
+            tag_filter=tag_filter,
+        )
+
+    @mcp.tool()
+    def list_insight_topics() -> dict[str, Any]:
+        """List all topics in the SG property insights corpus."""
+        return _rag_list_topics()
 
 
 def main() -> None:

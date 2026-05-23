@@ -15,8 +15,9 @@ sg-property-ai-agent/
 ├── prompts/                Master system prompt + reusable templates
 │   └── minimal/            Token-budget-aware variants (tiny, compact, quick-ref, decision trees, few-shot)
 ├── skills/                 18 modular knowledge files the agent can load on demand
-├── mcp_server/             FastMCP server with 17 calculators (BSD, ABSD, SSD, TDSR/MSR, mortgage, lease decay, upgrade paths, decoupling, scorecard)
-├── ollama/                 Modelfiles for running fully offline on Ollama (Gemma 3, Qwen 3, Llama 3.3)
+├── mcp_server/             FastMCP server with 19 calculators + insights search
+├── rag/                    Local RAG over 31 curated 2025-2027 SG property insights
+├── ollama/                 Modelfiles for running fully offline on Ollama
 ├── cli/                    Local CLI that pairs Ollama with Python calculators
 ├── examples/               9 worked end-to-end conversations
 └── docs/                   Installation and integration guides
@@ -48,7 +49,20 @@ python -m sg_property_mcp
 
 See `docs/installation.md`, `docs/using-with-claude-desktop.md`, `docs/using-with-cursor.md`.
 
-### Option 5: Fully offline with Ollama
+### Option 5: Local RAG over 2025-2027 insights
+
+Quick local retrieval over 31 curated insight chunks (URA, HDB, IRAS, MAS, agency commentary). Zero-dependency BM25 by default; optional Ollama embeddings.
+
+```bash
+python -m rag.cli "2026 private property outlook"
+python -m rag.cli --year 2027 --segment hdb "BTO supply"
+python -m rag.cli --tag absd "remission rules"
+python -m rag.cli --list   # see all 31 topics
+```
+
+See `rag/README.md`.
+
+### Option 6: Fully offline with Ollama
 
 Run the agent on a local model (Gemma 3 4B / 27B, Qwen 3 8B, Llama 3.3 70B). Zero per-query cost, full privacy, works offline.
 
@@ -115,6 +129,12 @@ See `cli/README.md`.
 | `score_listing` | Score a listing against user-defined criteria |
 | `compare_listings` | Side-by-side comparison of 2+ listings |
 | `psf_calc` | $/psf and $/sqm conversions |
+
+### Insights RAG (local)
+| Tool | Purpose |
+|------|---------|
+| `search_insights` | Search curated 2025-2027 SG property insights corpus (BM25 default, optional Ollama embeddings); filter by year, segment, tag |
+| `list_insight_topics` | List all topics in the corpus |
 
 ## Skills (modular knowledge)
 
