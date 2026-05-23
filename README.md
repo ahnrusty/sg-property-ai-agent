@@ -43,16 +43,39 @@ See `docs/installation.md` and `docs/using-with-claude-desktop.md`.
 
 ## Tools provided by the MCP server
 
+### Stamp duty
 | Tool | Purpose |
 |------|---------|
 | `calculate_bsd` | Buyer's Stamp Duty for residential or non-residential |
 | `calculate_absd` | Additional Buyer's Stamp Duty by buyer profile and property count |
 | `calculate_ssd` | Seller's Stamp Duty by holding period |
-| `check_tdsr_msr` | Total / Mortgage Servicing Ratio check given income and debts |
+
+### Affordability
+| Tool | Purpose |
+|------|---------|
+| `check_tdsr_msr` | Total / Mortgage Servicing Ratio check |
 | `estimate_mortgage` | Monthly payment, total interest, amortisation summary |
 | `estimate_max_loan` | Maximum loan quantum given TDSR/MSR headroom |
+
+### Lease and CPF
+| Tool | Purpose |
+|------|---------|
 | `lease_decay_value` | Indicative value impact for remaining lease using Bala's Curve |
 | `cpf_usage_limit` | CPF OA usage cap given remaining lease and youngest buyer age |
+| `estimate_cpf_refund_at_sale` | CPF refund (principal + accrued interest) on property sale |
+
+### Upgrade and downgrade paths
+| Tool | Purpose |
+|------|---------|
+| `analyze_upgrade_path` | Full strategy analysis for HDB↔Condo, Condo↔Landed, Condo→HDB, etc. |
+| `check_15_month_wait_out` | Private→HDB wait-out check with senior exemption logic |
+| `estimate_decoupling_cost` | Cash cost of decoupling a joint private property |
+| `compare_decoupling_vs_absd` | Decoupling cost vs paying ABSD comparison |
+| `estimate_transition_cash_flow` | End-to-end cashflow model for sell + buy |
+
+### Listings
+| Tool | Purpose |
+|------|---------|
 | `score_listing` | Score a listing against user-defined criteria |
 | `compare_listings` | Side-by-side comparison of 2+ listings |
 | `psf_calc` | $/psf and $/sqm conversions |
@@ -76,6 +99,9 @@ See `docs/installation.md` and `docs/using-with-claude-desktop.md`.
 | `skills/market-outlook-2026-2027.md` | URA / HDB / SORA / supply pipeline snapshot |
 | `skills/neighbourhood-scoring.md` | Commute, schools, future plans, noise, MRT lines |
 | `skills/red-flags-checklist.md` | Listing and contract warning signs |
+| `skills/upgrade-downgrade-paths.md` | All home transition paths (HDB↔Condo, Condo↔Landed, Condo→HDB) with strategy matrix |
+| `skills/decoupling-strategy.md` | Decoupling mechanics, IRAS scrutiny, decision framework |
+| `skills/sell-first-vs-buy-first.md` | Sequencing playbook with 6-month ABSD remission rules |
 
 ## License
 

@@ -19,5 +19,8 @@ Modular reference knowledge. Load only the file(s) relevant to the user's situat
 | `market-outlook-2026-2027.md` | Market context and forecasts |
 | `neighbourhood-scoring.md` | Compare areas |
 | `red-flags-checklist.md` | Spot warning signs |
+| `upgrade-downgrade-paths.md` | HDB↔Condo, Condo↔Landed, Condo→HDB, sequencing strategy |
+| `decoupling-strategy.md` | Decoupling mechanics, IRAS scrutiny, cost vs ABSD savings |
+| `sell-first-vs-buy-first.md` | Sequencing playbook with 6-month ABSD remission rules |
 
 All policy figures are illustrative. Always re-verify against official sources (IRAS, HDB, URA, MAS, CPF Board).

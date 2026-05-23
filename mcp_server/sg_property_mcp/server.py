@@ -10,7 +10,13 @@ from typing import Any
 
 from fastmcp import FastMCP
 
-from sg_property_mcp.tools import lease_decay, mortgage, scorecard, stamp_duty
+from sg_property_mcp.tools import (
+    lease_decay,
+    mortgage,
+    scorecard,
+    stamp_duty,
+    upgrade_paths,
+)
 
 mcp = FastMCP(
     name="sg-property",
@@ -222,6 +228,183 @@ def psf_calc(
     Supply any two of (price, sqft or sqm, psf) and the third is computed.
     """
     return scorecard.psf_calc(price=price, sqft=sqft, psf=psf, sqm=sqm)
+
+
+# ---------- Upgrade / downgrade path tools ----------
+
+
+@mcp.tool()
+def analyze_upgrade_path(
+    current_property: str,
+    target_property: str,
+    new_price: float,
+    profile: str,
+    marital_status: str,
+    properties_after_new_buy: int = 1,
+    keep_existing: bool = False,
+    youngest_buyer_age: int = 40,
+    spouse_ages: list[int] | None = None,
+    hdb_flat_type_rooms: int = 4,
+) -> dict[str, Any]:
+    """Analyse residential upgrade/downgrade paths and return viable strategies.
+
+    Args:
+        current_property: HDB, EC, CONDO, or LANDED.
+        target_property: HDB, EC, CONDO, or LANDED.
+        new_price: Purchase price of target property in SGD.
+        profile: SC, SPR, FOREIGNER, ENTITY, TRUSTEE.
+        marital_status: SINGLE, MARRIED_SC_SC, MARRIED_SC_SPR,
+            MARRIED_SC_FOREIGNER, MARRIED_SPR_SPR, MARRIED_OTHER.
+        properties_after_new_buy: Total properties owned after this purchase.
+        keep_existing: If True, plan to retain current property (triggers decoupling option).
+        youngest_buyer_age: Youngest co-owner age.
+        spouse_ages: [age_a, age_b] list for couples; for senior exemption checks.
+        hdb_flat_type_rooms: 2, 3, 4, 5 for HDB target (senior exemption applies to <= 4).
+    """
+    spouse_tuple = tuple(spouse_ages) if spouse_ages else None
+    return upgrade_paths.analyze_upgrade_path(
+        current_property=current_property,
+        target_property=target_property,
+        new_price=new_price,
+        profile=profile,
+        marital_status=marital_status,
+        properties_after_new_buy=properties_after_new_buy,
+        keep_existing=keep_existing,
+        youngest_buyer_age=youngest_buyer_age,
+        spouse_ages=spouse_tuple,
+        hdb_flat_type_rooms=hdb_flat_type_rooms,
+    )
+
+
+@mcp.tool()
+def check_15_month_wait_out(
+    target_hdb_rooms: int,
+    youngest_buyer_age: int = 40,
+    spouse_ages: list[int] | None = None,
+    target_is_new_bto: bool = False,
+    has_otp_before_sep_2022: bool = False,
+) -> dict[str, Any]:
+    """Check whether the 15-month wait-out applies for private-to-HDB downgrade.
+
+    Args:
+        target_hdb_rooms: Number of rooms in target HDB (2-5).
+        youngest_buyer_age: Single buyer's age or youngest co-buyer's age.
+        spouse_ages: [age_a, age_b] for couples; needed for senior exemption.
+        target_is_new_bto: True for BTO (30-month wait), False for resale (15-month).
+        has_otp_before_sep_2022: Documentary proof of OTP/sale before policy date.
+    """
+    spouse_tuple = tuple(spouse_ages) if spouse_ages else None
+    return upgrade_paths.check_15_month_wait_out(
+        spouse_ages=spouse_tuple,
+        youngest_buyer_age=youngest_buyer_age,
+        target_hdb_rooms=target_hdb_rooms,
+        target_is_new_bto=target_is_new_bto,
+        has_otp_before_sep_2022=has_otp_before_sep_2022,
+    )
+
+
+@mcp.tool()
+def estimate_decoupling_cost(
+    current_property_value: float,
+    share_being_transferred: float = 0.50,
+) -> dict[str, Any]:
+    """Estimate cash cost of decoupling a jointly-owned private property.
+
+    Args:
+        current_property_value: Current market value (SGD).
+        share_being_transferred: Fraction transferred (0.50 typical for spousal joint).
+    """
+    return upgrade_paths.estimate_decoupling_cost(
+        current_property_value, share_being_transferred
+    )
+
+
+@mcp.tool()
+def compare_decoupling_vs_absd(
+    current_joint_property_value: float,
+    new_property_price: float,
+    profile: str,
+    properties_after_new_buy: int,
+) -> dict[str, Any]:
+    """Compare decoupling cost vs paying ABSD on a planned second property.
+
+    Args:
+        current_joint_property_value: Current value of joint property.
+        new_property_price: Planned new property price.
+        profile: SC, SPR, FOREIGNER.
+        properties_after_new_buy: Total properties owned after new purchase
+            (used to determine ABSD rate if NOT decoupling).
+    """
+    return upgrade_paths.compare_decoupling_vs_absd(
+        current_joint_property_value,
+        new_property_price,
+        profile,
+        properties_after_new_buy,
+    )
+
+
+@mcp.tool()
+def estimate_cpf_refund_at_sale(
+    cpf_principal_used: float,
+    years_held: float,
+    accrued_rate: float = 0.025,
+) -> dict[str, Any]:
+    """Estimate CPF refund (principal + accrued interest) on property sale.
+
+    Simplified linear-withdrawal approximation. For precise figures use CPF Home Calculator.
+
+    Args:
+        cpf_principal_used: Total CPF OA principal used on property.
+        years_held: Years property has been held.
+        accrued_rate: CPF accrued interest rate (default 0.025 = 2.5% p.a., OA rate).
+    """
+    return upgrade_paths.estimate_cpf_refund_at_sale(
+        cpf_principal_used, years_held, accrued_rate
+    )
+
+
+@mcp.tool()
+def estimate_transition_cash_flow(
+    sell_price: float,
+    sell_outstanding_loan: float,
+    sell_cpf_refund_estimate: float,
+    sell_agent_commission_rate: float,
+    new_price: float,
+    new_ltv_cap: float,
+    new_min_cash_pct: float,
+    new_bsd: float,
+    new_absd_upfront: float,
+    interim_months: int = 0,
+    interim_rental_monthly: float = 0.0,
+) -> dict[str, Any]:
+    """End-to-end cashflow model for a sell + buy transition.
+
+    Args:
+        sell_price: Sale price of current property.
+        sell_outstanding_loan: Outstanding mortgage to redeem.
+        sell_cpf_refund_estimate: Estimated CPF refund.
+        sell_agent_commission_rate: Decimal (e.g. 0.02). GST 9% added.
+        new_price: New property purchase price.
+        new_ltv_cap: Max LTV (0.75 first, 0.45 second).
+        new_min_cash_pct: Min cash component (0.05 first, 0.25 second).
+        new_bsd: BSD on new property.
+        new_absd_upfront: ABSD cash outlay.
+        interim_months: Months of interim rental.
+        interim_rental_monthly: Monthly interim rent.
+    """
+    return upgrade_paths.estimate_transition_cash_flow(
+        sell_price=sell_price,
+        sell_outstanding_loan=sell_outstanding_loan,
+        sell_cpf_refund_estimate=sell_cpf_refund_estimate,
+        sell_agent_commission_rate=sell_agent_commission_rate,
+        new_price=new_price,
+        new_ltv_cap=new_ltv_cap,
+        new_min_cash_pct=new_min_cash_pct,
+        new_bsd=new_bsd,
+        new_absd_upfront=new_absd_upfront,
+        interim_months=interim_months,
+        interim_rental_monthly=interim_rental_monthly,
+    )
 
 
 def main() -> None:

@@ -94,6 +94,30 @@ Refer to the skills files in `skills/` for full reference. Apply the following a
 
 Always re-verify before quoting.
 
+### Upgrade and downgrade paths (always apply if user is moving home)
+
+Whenever the user mentions selling current home and buying another, surface the relevant path:
+
+| Path | Primary strategies |
+|------|---------------------|
+| HDB → Condo/EC | Sell First (zero ABSD) **or** Buy First with 6-month remission (SC married couples) |
+| HDB → Landed | Same as HDB → Condo for SC; foreigner/SPR need LDAU approval |
+| Condo → Condo (sideways) | Sell First, 6-month remission, or Decouple-and-keep (if joint) |
+| Condo → Landed | Sell First, 6-month remission, or Decouple-and-keep (powerful with rental retention) |
+| Landed → Condo (downsize) | Sell First (clean); at 55+ CPF refund tops up RA to FRS for boosted CPF LIFE |
+| Condo → HDB | 15-month wait-out (Sep 2022 rule); senior exemption if both spouses 55+ buying 4-room or smaller |
+| Landed → HDB | Same as Condo → HDB |
+| HDB → HDB | Resale levy if previously subsidised; no ABSD; EIP/SPR quota |
+
+**Hard rules to apply**:
+- **6-month ABSD remission**: SC married couples only; sell existing within 6 months of new property's legal completion (resale) or TOP/CSC (new launch). No general extensions.
+- **15-month wait-out**: applies to private property owners and ex-owners buying non-subsidised HDB resale (since 30 Sep 2022). 30 months for BTO.
+- **Senior exemption**: both spouses 55+, buying 4-room or smaller resale (or 2-room Flexi or CCA) → no wait-out.
+- **Decoupling**: only for private joint-owned property; HDB cannot be decoupled. Cost ~$25-50k vs ABSD savings of $200-700k typically.
+- **LTV on second property**: 45% (not 75%); plan cashflow accordingly.
+
+Always use MCP tools `analyze_upgrade_path`, `check_15_month_wait_out`, `estimate_decoupling_cost`, `compare_decoupling_vs_absd`, `estimate_cpf_refund_at_sale`, and `estimate_transition_cash_flow` for these computations. See `skills/upgrade-downgrade-paths.md`, `skills/decoupling-strategy.md`, and `skills/sell-first-vs-buy-first.md` for full reference.
+
 ## Output formats
 
 ### Listing comparison
